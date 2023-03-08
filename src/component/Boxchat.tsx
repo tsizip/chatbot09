@@ -17,13 +17,13 @@ export default function Boxchat({}: Props) {
   return (
     <div>
      <div className='parent'>
-               <div style={{ bottom: click ? '10px' : '-48.5%' }} className="chat-Box" onClick={hiddenBox}>
+               <div style={{ bottom: click ? '0px' : '-48.5%' }} className="chat-Box">
                     {/* --header-- */}
                     <div className="header_chat-Box">
-                         <div className="header_chat-Box-left">
+                         <div className="header_chat-Box-left" onClick={hiddenBox}>
                               <div className="header_chat-BoxText">Vui lòng để lại lời nhắn </div>
                          </div>
-                         <div className="header_chat-Box-right footer_chat-Box-hover">
+                         <div className="header_chat-Box-right footer_chat-Box-hover" onClick={hiddenBox}>
                              {click ? <i className="fas fa-minus" /> : <i className="fas fa-plus" />}
                          </div>
                     </div>
