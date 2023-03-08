@@ -113,6 +113,7 @@ input {
   border: 1px solid rgb(17, 132, 23);
   border-radius: 5px 5px 0 0 !important;
   box-shadow: 0 0 1px #fff inset;
+  bottom: 0px;
   font-family: arial;
   font-size: 12px;
   width: 300px;
@@ -229,7 +230,7 @@ input {
   word-break: break-word;
   margin-top: 8px;
 }
-.parent .chat-Box .footer_chat-Box {
+.parent .chat-Box .ft .footer_chat-Box {
   align-items: flex-end;
   background-color: var(--back-ground);
   display: flex;
@@ -237,7 +238,7 @@ input {
   transition: all 0.1s ease;
   padding: 1rem 0;
 }
-.parent .chat-Box .footer_chat-Box .footer_chat-Box-hover {
+.parent .chat-Box .ft .footer_chat-Box .footer_chat-Box-hover {
   /* background-color: aqua; */
   margin: auto;
   display: flex;
@@ -245,16 +246,16 @@ input {
   padding: 8px;
   border-radius: 50%;
 }
-.parent .chat-Box .footer_chat-Box .footer_chat-Box-hover .fill {
+.parent .chat-Box .ft .footer_chat-Box .footer_chat-Box-hover .fill {
   color: #fff;
   width: 1.5rem;
 }
-.parent .chat-Box .footer_chat-Box .footer_chat-Box-hover:hover {
+.parent .chat-Box .ft .footer_chat-Box .footer_chat-Box-hover:hover {
   cursor: pointer;
   background-color: rgba(193, 193, 193, 0.623);
   border-radius: 50%;
 }
-.parent .chat-Box .footer_chat-Box .footer_chat-Box-input {
+.parent .chat-Box .ft .footer_chat-Box .footer_chat-Box-input {
   background-color: var(--light-gray);
   border-radius: 20px;
   display: flex;
@@ -264,7 +265,7 @@ input {
   transition: all 0.2s ease;
   margin: 0px 8px 2px 8px;
 }
-.parent .chat-Box .footer_chat-Box .footer_chat-Box-input .footer-text {
+.parent .chat-Box .ft .footer_chat-Box .footer_chat-Box-input .footer-text {
   background-color: transparent;
   border: none;
   caret-color: var(--primary);
