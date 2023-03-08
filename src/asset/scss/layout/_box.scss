@@ -1,0 +1,280 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+:root {
+     --primary: rgba(254, 44, 85, 1);
+     --background: #fff;
+     --text-black: #050505;
+     --light-gray: #f3f3f5;
+     --gray: #e4e6eb;
+     --message-gray: #e4e6eb;
+     --white-light-gray: #fff;
+
+     --medium-gray: #bcc0c4; /*not change*/
+     --text-gray: #65676b; /*not change*/
+     --dark-gray: #606770; /*not change*/
+     --active-green: #5ad539; /*not change*/
+     --overlay-green: rgba(90, 213, 57, 0.3); /*not change*/
+
+     --overlay: rgba(218, 218, 218, 0.6);
+     --border-color: #e4e6eb;
+     --box-border-color: transparent;
+     --box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
+
+     /* Scroll bar */
+     --track-color: #f1f1f1;
+     --thumb-color: #aaa;
+     --thumb-hover-color: #888;
+}
+
+[data-theme="dark"] {
+     --background: #242526;
+     --text-black: #e4e6eb;
+     --light-gray: #3a3b3c;
+     --gray: #767677;
+     --message-gray: #3a3b3c;
+     --white-light-gray: #3a3b3c;
+
+     --overlay: rgba(0, 0, 0, 0.6);
+     --border-color: #3a3b3c;
+     --box-border-color: #3a3b3c;
+     --box-shadow: rgb(0, 0, 0, 0.3) 0px 4px 16px;
+
+     /* Scroll bar */
+     --track-color: #424242;
+     --thumb-color: #686868;
+     --thumb-hover-color: #888;
+}
+
+/* width */
+::-webkit-scrollbar {
+     width: 6px;
+     height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+     background: var(--track-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+     background: var(--thumb-color);
+     border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+     background: var(--thumb-hover-color);
+}
+
+html {
+     font-size: 90.5%;
+}
+
+body {
+     font-family: "Be Vietnam Pro", sans-serif;
+     overflow-y: hidden;
+     margin: 0;
+}
+
+* {
+     padding: 0;
+     margin: 0;
+     box-sizing: border-box;
+     font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+     font-family: "Be Vietnam Pro", sans-serif;
+
+     border: 1.5px solid transparent;
+     outline: none;
+}
+
+a {
+     text-decoration: none;
+}
+
+input {
+     font-family: "Be Vietnam Pro", sans-serif;
+}
+.test {
+     color: red;
+}
+
+.parent {
+     height: 100vh;
+     position: relative;
+     .chat-Box {
+          
+          background-color: #25982b;
+          right: 10px;
+          border: 1px solid rgb(17, 132, 23);
+          border-radius: 5px 5px 0 0 !important;
+          box-shadow: 0 0 1px #fff inset;
+          bottom: 10px;
+          font-family: arial;
+          font-size: 12px;
+          width: 330px;
+          min-width: 180px;
+          padding: 4px .6rem;
+          position: absolute;
+
+          z-index: 2147483647;
+          .header_chat-Box {
+               background-color: transparent;
+               display: flex;
+               height: 32px;
+               justify-content: space-between;
+               transition: all 0.2s ease;
+               -webkit-user-select: none;
+               user-select: none;
+               .header_chat-Box-left {
+                    align-items: center;
+                    display: flex;
+                    flex: 1 1;
+                    
+                    .header_chat-BoxText {
+                         color: var(--background);
+                         font-weight: bold;
+                    }
+               }
+               .header_chat-Box-right {
+                    align-items: center;
+                    display: flex;
+                   
+               }
+               .footer_chat-Box-hover{
+                    margin: auto;
+                    display: flex;
+                    justify-content: center;
+                    padding: 8px;
+                    border-radius: 50%;
+                    i{
+                         color: white;
+                    }
+                    &:hover {
+                         cursor: pointer;
+                         background-color: rgba(193, 193, 193, 0.623);
+                         border-radius: 50%;
+                    }
+               }
+          }
+          .content_chat-Box {
+               height: 330px;
+               background-color: white;
+               border-radius: 5px;
+               padding: 1rem 4px;
+               
+               overflow: auto;
+               padding-top: 36px;
+               padding-bottom: 24px;
+               .content_chat-BoxItem-left {
+                    align-items: flex-end;
+                    display: flex;
+                    .content_chat-BoxImg {
+                         border: 1px solid var(--border-color);
+                         border-radius: 50%;
+                         height: 30px;
+                         object-fit: cover;
+                         width: 30px;
+                    }
+                    .content_chat-BoxMini {
+                         width: auto;
+                         height: auto;
+                         margin: 0 4px;
+                         max-width: 80%;
+                         .content_chat-BoxText-left {
+                              background-color: var(--message-gray);
+                              border-radius: 20px;
+                              color: var(--text-black);
+                              font-size: 1rem;
+                              line-height: 1.5;
+                              padding: 8px 16px;
+                              -webkit-transform-origin: 0;
+                              transform-origin: 0;
+                              transition: all 0.2s ease;
+                              word-break: break-word;
+                              margin-top: 8px;
+                         }
+                    }
+               }
+               .content_chat-BoxItem-right {
+                    align-items: flex-end;
+                    display: flex;
+                    justify-content: end;
+                    .content_chat-BoxImg {
+                         border: 1px solid var(--border-color);
+                         border-radius: 50%;
+                         height: 30px;
+                         object-fit: cover;
+                         width: 30px;
+                    }
+                    .content_chat-BoxMini {
+                         width: auto;
+                         height: auto;
+                         margin: 0 4px;
+                         max-width: 80%;
+                         .content_chat-BoxText-right {
+                              background-color: #25982b;
+                              border-radius: 20px;
+                              color: var(--background);
+                              font-size: 1rem;
+                              line-height: 1.5;
+                              padding: 8px 16px;
+                              -webkit-transform-origin: 0;
+                              transform-origin: 0;
+                              transition: all 0.2s ease;
+                              word-break: break-word;
+                              margin-top: 8px;
+                         }
+                    }
+               }
+          }
+          .footer_chat-Box {
+               align-items: flex-end;
+               background-color: var(--back-ground);
+               display: flex;
+               position: relative;
+               transition: all 0.1s ease;
+               padding: 1rem 0;
+               .footer_chat-Box-hover {
+                    /* background-color: aqua; */
+                    margin: auto;
+                    display: flex;
+                    justify-content: center;
+                    padding: 8px;
+                    border-radius: 50%;
+                    .fill {
+                         color: #fff;
+                         width: 1.5rem;
+                    }
+                    &:hover {
+                         cursor: pointer;
+                         background-color: rgba(193, 193, 193, 0.623);
+                         border-radius: 50%;
+                    }
+               }
+               .footer_chat-Box-input {
+                    background-color: var(--light-gray);
+                    border-radius: 20px;
+                    display: flex;
+                    flex: 1 1;
+                    flex-direction: column;
+                    overflow: hidden;
+                    transition: all 0.2s ease;
+                    margin: 0px 8px 2px 8px;
+                    .footer-text {
+                         background-color: transparent;
+                         border: none;
+                         caret-color: var(--primary);
+                         color: var(--text-black);
+                         outline: none;
+                         padding: 9px 12px;
+                         width: 100%;
+                    }
+               }
+          }
+     }
+}
