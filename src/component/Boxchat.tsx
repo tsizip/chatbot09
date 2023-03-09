@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 type Props = {}
 
 export default function Boxchat({ }: Props) {
+     const [count,setCount] = useState(0)
      // const [test ,setTest] = useState(['2'])
      let valueFinal = ''
      const [final, setFinal] = useState(String)
@@ -12,11 +13,11 @@ export default function Boxchat({ }: Props) {
      const [click, setClick] = useState(true)
      const [prompt, setPrompt] = useState('')
      const [logChat, setLogChat] = useState([
-          { type: 'AI', mess: 'xin chao, toi co the giup gi cho ban?' },
+          { type: 'AI', mess: 'Hi, can I help you?' },
           // { type: 'Human', mess: 'any question' }
      ])
      // console.log(...logChat);
-     
+
 
 
      const [QAinit, setQAinit] = useState(String)
@@ -35,56 +36,67 @@ export default function Boxchat({ }: Props) {
      }
 
      const xuly = async () => {
-
-          
-          let logChatFilter = []
-          for (let i = 1; i < logChat.length; i++) {
-               logChatFilter.push(logChat[i])
+          let value = valueFinal + final
+          console.log('final', final)
+          console.log('count', count)
+          // console.log('value', value + `AI: chat mess AI\\n`)
+          // if(localStorage.getItem('data')){
+          //      callApi(localStorage.getItem('data'))
+          //      console.log('local',localStorage.getItem('data'))
+          // } else {
+          //      await console.log('value',value)
+          if (count <= 1) {
+               callApi(value)
+          } else {
+               callApi(localStorage.getItem('data'))
           }
-          
+          // }
 
-         
-         
-
-
-          callApi(valueFinal + final)
 
           // await callApi("Human: what is redux\nAI: Redux is a library for managing application state. It is most commonly used with React, but can be used with any other JavaScript framework. Redux allows developers to store and manage application state in a single place and access it in multiple components throughout an application.\nHuman: what is the lastes this version\nAI: The latest version of Redux is v4.0.1, released on March 25, 2020.")
      }
 
 
-     const callApi = async (text: string) => {
+     const callApi = async (text: string | any) => {
           const { Configuration, OpenAIApi } = require("openai");
           const configuration = new Configuration({
-               apiKey: "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",
+               apiKey: "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",
           });
           const openai = new OpenAIApi(configuration);
           const response = await openai.createCompletion({
                model: "text-davinci-003",
                // prompt:text,
                prompt: text,
-               // max_tokens: 4000,
-               // temperature: 0.7,
-               temperature: 0.1,
-               max_tokens: 4000,
+               temperature: 0.5,
+               max_tokens: 3000,
                top_p: 1,
                frequency_penalty: 0,
                presence_penalty: 0.6,
                stop: [" Human:", " AI:"],
           });
-     
-          let newChat = `AI: ${response.data.choices[0].text}\\n`
-          let value = QAinit + newChat
-          await setQAinit(value)
-          valueFinal = await valueFinal + newChat
-          await setFinal(final + valueFinal)
-          await setLogChat([...logChat, { type: 'AI', mess: response.data.choices[0].text }])
-          // await setQA([...QA, { type: 'AI', mess: response.data.choices[0].text }])
 
-          // console.log('logchat', logChat)
-          console.log(response.data.choices[0].text)
-          console.log('value', valueFinal)
-          console.log('response',response)
+          if(response.data.choices[0].text !== ''){
+               // let newChat = `AI: ${response.data.choices[0].text}\\n`
+               let newChat = `${response.data.choices[0].text}\\n`
+               let value = QAinit + newChat
+               await setQAinit(value)
+               valueFinal = valueFinal + newChat
+               await setFinal(valueFinal)
+     
+               await setLogChat([...logChat, { type: 'AI', mess: response.data.choices[0].text }])
+          } else {
+               // callApi()
+               // console.log(localStorage.getItem("data"))
+               await setLogChat([...logChat, { type: 'AI', mess: 'Please describe your question clearly!' }])
+               let data = await localStorage.getItem("data")
+               callApi(data)
+          }
+
+          
+
+          // console.log(response.data.choices[0].text)
+          // console.log('value', valueFinal)
+          // console.log('response', response)
      }
 
      useEffect(() => {
@@ -93,8 +105,10 @@ export default function Boxchat({ }: Props) {
           // console.log('value',valueFinal)
           // console.log('QA', QAinit)
           // console.log('prom', prompt)
+          // callApi(final)
+          localStorage.setItem('data', final)
           console.log('final', final)
-     }, [QAinit])
+     }, [final])
 
 
 
@@ -144,14 +158,18 @@ export default function Boxchat({ }: Props) {
 
                                    <form onSubmit={async function (e) {
                                         e.preventDefault()
+                                        await setCount(count+1)
                                         let arr = await logChat
                                         await arr.push({ type: 'Human', mess: prompt })
 
                                         await setLogChat(arr)
-                                        let promptValue = `Human: ${prompt}\\n`
+                                        // let promptValue = `Human: ${prompt}\\n`
+                                        let promptValue = `${prompt}\\n`
+                                        console.log('submit', promptValue)
                                         await setQAinit(promptValue)
-                                        valueFinal = await valueFinal + promptValue
-                                        await setFinal(final + valueFinal)
+                                        valueFinal = valueFinal + promptValue
+                                        // console.log('valuefinal',valueFinal)
+                                        await setFinal(valueFinal + final)
                                         await xuly()
 
 
