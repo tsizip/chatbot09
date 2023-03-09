@@ -1,12 +1,13 @@
 // tsrfc
 
 import React, { useEffect, useRef, useState } from 'react'
-import Axios from 'axios'
-import { Statement } from 'typescript'
+
 type Props = {}
 
 export default function Boxchat({ }: Props) {
      // const [test ,setTest] = useState(['2'])
+     let valueFinal = ''
+     const [final, setFinal] = useState(String)
      const myRef = useRef<null | HTMLDivElement>(null)
      const [click, setClick] = useState(true)
      const [prompt, setPrompt] = useState('')
@@ -14,6 +15,8 @@ export default function Boxchat({ }: Props) {
           { type: 'AI', mess: 'xin chao, toi co the giup gi cho ban?' },
           // { type: 'Human', mess: 'any question' }
      ])
+     // console.log(...logChat);
+     
 
 
      const [QAinit, setQAinit] = useState(String)
@@ -33,27 +36,18 @@ export default function Boxchat({ }: Props) {
 
      const xuly = async () => {
 
-          // for (let i = 1; i < logChat.length; i++) {
-          //      // console.log(logChat[i].mess)
-          //      setQA([...QA, { type: 'Human', mess: prompt }])
-          // }
-
-          // value += `Human: ${prompt}\\n`
-          // console.log('value', value)
+          
           let logChatFilter = []
           for (let i = 1; i < logChat.length; i++) {
                logChatFilter.push(logChat[i])
           }
-          // console.log('logChat', logChatFilter)
+          
 
-          // for (let i = 0; i < logChatFilter.length; i++) {
-
-          // }
-
+         
          
 
 
-          callApi(QAinit)
+          callApi(valueFinal + final)
 
           // await callApi("Human: what is redux\nAI: Redux is a library for managing application state. It is most commonly used with React, but can be used with any other JavaScript framework. Redux allows developers to store and manage application state in a single place and access it in multiple components throughout an application.\nHuman: what is the lastes this version\nAI: The latest version of Redux is v4.0.1, released on March 25, 2020.")
      }
@@ -62,36 +56,45 @@ export default function Boxchat({ }: Props) {
      const callApi = async (text: string) => {
           const { Configuration, OpenAIApi } = require("openai");
           const configuration = new Configuration({
-               apiKey: "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",
+               apiKey: "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",
           });
           const openai = new OpenAIApi(configuration);
           const response = await openai.createCompletion({
                model: "text-davinci-003",
                // prompt:text,
-               prompt: `Human: what is redux\nAI: Redux is an open-source JavaScript library for managing application state. It is most commonly used with libraries like React or Angular for building user interfaces. Redux maintains the state of an entire application in a single immutable state tree, which can only be changed using specific actions.\nHuman: ${text}`,
+               prompt: text,
                // max_tokens: 4000,
                // temperature: 0.7,
-               temperature: 0.6,
+               temperature: 0.1,
                max_tokens: 4000,
                top_p: 1,
                frequency_penalty: 0,
                presence_penalty: 0.6,
                stop: [" Human:", " AI:"],
           });
-          let newChat = `AI: ${response.data.choices[0].text}\\n `
-          await setQAinit(QAinit + newChat)
+     
+          let newChat = `AI: ${response.data.choices[0].text}\\n`
+          let value = QAinit + newChat
+          await setQAinit(value)
+          valueFinal = await valueFinal + newChat
+          await setFinal(final + valueFinal)
           await setLogChat([...logChat, { type: 'AI', mess: response.data.choices[0].text }])
           // await setQA([...QA, { type: 'AI', mess: response.data.choices[0].text }])
 
           // console.log('logchat', logChat)
           console.log(response.data.choices[0].text)
+          console.log('value', valueFinal)
+          console.log('response',response)
      }
 
      useEffect(() => {
           executeScroll()
           // console.log('QA', QA)
-          console.log('QA', QAinit)
-     }, [prompt, logChat, QAinit])
+          // console.log('value',valueFinal)
+          // console.log('QA', QAinit)
+          // console.log('prom', prompt)
+          console.log('final', final)
+     }, [QAinit])
 
 
 
@@ -147,7 +150,8 @@ export default function Boxchat({ }: Props) {
                                         await setLogChat(arr)
                                         let promptValue = `Human: ${prompt}\\n`
                                         await setQAinit(promptValue)
-
+                                        valueFinal = await valueFinal + promptValue
+                                        await setFinal(final + valueFinal)
                                         await xuly()
 
 
