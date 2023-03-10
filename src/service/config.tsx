@@ -10,7 +10,6 @@ export const OpenAIService = {
                const openai = new OpenAIApi(configuration);
                const response = await openai.createCompletion({
                     model: "text-davinci-003",
-                    // prompt:text,
                     prompt: text,
                     temperature: 0.5,
                     max_tokens: 3000,
@@ -21,7 +20,6 @@ export const OpenAIService = {
                });
      
                if(response.data.choices[0].text !== ''){
-                    // let newChat = `AI: ${response.data.choices[0].text}\\n`
                     let newChat = `${response.data.choices[0].text}\\n`
                     let value = QAinit + newChat
                     await setQAinit(value)
@@ -30,18 +28,9 @@ export const OpenAIService = {
           
                     await setLogChat([...logChat, { type: 'AI', mess: response.data.choices[0].text }])
                } else {
-                    // callApi()
-                    // console.log(localStorage.getItem("data"))
+
                     await setLogChat([...logChat, { type: 'AI', mess: 'Please describe your question clearly!' }])
-                    // let data = await localStorage.getItem("data")
-                    // callApi(data)
                }
-     
-               
-     
-               // console.log(response.data.choices[0].text)
-               // console.log('value', valueFinal)
-               // console.log('response', response)
           }
      }
 }

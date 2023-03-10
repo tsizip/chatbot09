@@ -7,7 +7,6 @@ type Props = {}
 
 export default function Boxchat({ }: Props) {
      const [count,setCount] = useState(0)
-     // const [test ,setTest] = useState(['2'])
      let valueFinal = ''
      const [final, setFinal] = useState(String)
      const myRef = useRef<null | HTMLDivElement>(null)
@@ -15,15 +14,9 @@ export default function Boxchat({ }: Props) {
      const [prompt, setPrompt] = useState('')
      const [logChat, setLogChat] = useState([
           { type: 'AI', mess: 'Hi, can I help you?' },
-          // { type: 'Human', mess: 'any question' }
      ])
-     // console.log(...logChat);
-
-
 
      const [QAinit, setQAinit] = useState(String)
-
-     // const [QA, setQA] = useState(Array)
 
      let img1 = require('../asset/images/1.png')
 
@@ -38,40 +31,21 @@ export default function Boxchat({ }: Props) {
 
      const xuly = async () => {
           let value = valueFinal + final
-          console.log('final', final)
-          console.log('count', count)
-          // console.log('value', value + `AI: chat mess AI\\n`)
-          // if(localStorage.getItem('data')){
-          //      callApi(localStorage.getItem('data'))
-          //      console.log('local',localStorage.getItem('data'))
-          // } else {
-          //      await console.log('value',value)
           if (count <= 1) {
                callApi(value)
           } else {
                callApi(localStorage.getItem('data'))
           }
-          // }
 
-
-          // await callApi("Human: what is redux\nAI: Redux is a library for managing application state. It is most commonly used with React, but can be used with any other JavaScript framework. Redux allows developers to store and manage application state in a single place and access it in multiple components throughout an application.\nHuman: what is the lastes this version\nAI: The latest version of Redux is v4.0.1, released on March 25, 2020.")
      }
-
 
      const callApi = OpenAIService.callApi(QAinit,setQAinit,valueFinal, setFinal, setLogChat,logChat)
 
      useEffect(() => {
           executeScroll()
-          // console.log('QA', QA)
-          // console.log('value',valueFinal)
-          // console.log('QA', QAinit)
-          // console.log('prom', prompt)
-          // callApi(final)
           localStorage.setItem('data', final)
           console.log('final', final)
      }, [final])
-
-
 
      return (
           <div>
@@ -105,8 +79,6 @@ export default function Boxchat({ }: Props) {
                                              </div>
                                         </div>)
                                    }
-
-
                               })}
 
                          </div>
@@ -124,30 +96,32 @@ export default function Boxchat({ }: Props) {
                                         await arr.push({ type: 'Human', mess: prompt })
 
                                         await setLogChat(arr)
-                                        // let promptValue = `Human: ${prompt}\\n`
                                         let promptValue = `${prompt}\\n`
                                         console.log('submit', promptValue)
                                         await setQAinit(promptValue)
                                         valueFinal = valueFinal + promptValue
-                                        // console.log('valuefinal',valueFinal)
                                         await setFinal(valueFinal + final)
                                         await xuly()
-
-
-
                                         await setPrompt('')
-                                        // console.log('prom', prompt)
-                                        // const inputValue = document.getElementById("#inputChat")
-                                        // inputValue?.innerText = ''
-
-
+                                      
                                    }} className="footer_chat-Box-input">
                                         <input id='inputChat' value={prompt} type="text" placeholder="Aa" className="footer-text" onChange={(e) => {
                                              setPrompt(e.target.value)
                                         }} />
                                    </form>
-                                   <div className="footer_chat-Box-hover" onClick={() => {
-                                        // callApi(prompt)
+                                   <div className="footer_chat-Box-hover" onClick={async function() {
+                                        await setCount(count+1)
+                                        let arr = await logChat
+                                        await arr.push({ type: 'Human', mess: prompt })
+
+                                        await setLogChat(arr)
+                                        let promptValue = `${prompt}\\n`
+                                        console.log('submit', promptValue)
+                                        await setQAinit(promptValue)
+                                        valueFinal = valueFinal + promptValue
+                                        await setFinal(valueFinal + final)
+                                        await xuly()
+                                        await setPrompt('')
 
                                    }}>
                                         <svg className="fill" fill="#fff" viewBox="0 0 24 24" width="20px"><path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 C22.8132856,11.0605983 22.3423792,10.4322088 21.714504,10.118014 L4.13399899,1.16346272 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.8376543,3.0486314 1.15159189,3.99121575 L3.03521743,10.4322088 C3.03521743,10.5893061 3.34915502,10.7464035 3.50612381,10.7464035 L16.6915026,11.5318905 C16.6915026,11.5318905 17.1624089,11.5318905 17.1624089,12.0031827 C17.1624089,12.4744748 16.6915026,12.4744748 16.6915026,12.4744748 Z" /></svg>
