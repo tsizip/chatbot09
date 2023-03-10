@@ -1,6 +1,7 @@
 // tsrfc
 
 import React, { useEffect, useRef, useState } from 'react'
+import { OpenAIService } from '../service/config'
 
 type Props = {}
 
@@ -57,47 +58,7 @@ export default function Boxchat({ }: Props) {
      }
 
 
-     const callApi = async (text: string | any) => {
-          const { Configuration, OpenAIApi } = require("openai");
-          const configuration = new Configuration({
-               apiKey: "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",
-          });
-          const openai = new OpenAIApi(configuration);
-          const response = await openai.createCompletion({
-               model: "text-davinci-003",
-               // prompt:text,
-               prompt: text,
-               temperature: 0.5,
-               max_tokens: 3000,
-               top_p: 1,
-               frequency_penalty: 0,
-               presence_penalty: 0.6,
-               stop: [" Human:", " AI:"],
-          });
-
-          if(response.data.choices[0].text !== ''){
-               // let newChat = `AI: ${response.data.choices[0].text}\\n`
-               let newChat = `${response.data.choices[0].text}\\n`
-               let value = QAinit + newChat
-               await setQAinit(value)
-               valueFinal = valueFinal + newChat
-               await setFinal(valueFinal)
-     
-               await setLogChat([...logChat, { type: 'AI', mess: response.data.choices[0].text }])
-          } else {
-               // callApi()
-               // console.log(localStorage.getItem("data"))
-               await setLogChat([...logChat, { type: 'AI', mess: 'Please describe your question clearly!' }])
-               // let data = await localStorage.getItem("data")
-               // callApi(data)
-          }
-
-          
-
-          // console.log(response.data.choices[0].text)
-          // console.log('value', valueFinal)
-          // console.log('response', response)
-     }
+     const callApi = OpenAIService.callApi(QAinit,setQAinit,valueFinal, setFinal, setLogChat,logChat)
 
      useEffect(() => {
           executeScroll()
