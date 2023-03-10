@@ -60,7 +60,7 @@ export default function Boxchat({ }: Props) {
      const callApi = async (text: string | any) => {
           const { Configuration, OpenAIApi } = require("openai");
           const configuration = new Configuration({
-               apiKey: "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",
+               apiKey: "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",
           });
           const openai = new OpenAIApi(configuration);
           const response = await openai.createCompletion({
@@ -88,8 +88,8 @@ export default function Boxchat({ }: Props) {
                // callApi()
                // console.log(localStorage.getItem("data"))
                await setLogChat([...logChat, { type: 'AI', mess: 'Please describe your question clearly!' }])
-               let data = await localStorage.getItem("data")
-               callApi(data)
+               // let data = await localStorage.getItem("data")
+               // callApi(data)
           }
 
           
