@@ -107,6 +107,8 @@ input {
      height: 100vh;
      position: relative;
      .chat-Box {
+          transition: all .2s;
+          background-color: #008000;
           border-radius: 10px 10px 0 0;
           // display: none;
           // background-color: #25982b;
@@ -124,13 +126,14 @@ input {
 
           z-index: 2147483647;
           .header {
+               cursor: pointer;
                border-bottom: 1px solid rgba(100, 100, 111, 0.2);
                .header_chat-Box {
-                    margin: 1rem 4px;
+                    margin: 0.6rem 4px;
 
                     background-color: transparent;
                     display: flex;
-                    height: 32px;
+                    height: 30px;
                     justify-content: space-between;
                     transition: all 0.2s ease;
                     -webkit-user-select: none;
@@ -139,6 +142,7 @@ input {
                          align-items: center;
                          display: flex;
                          flex: 1 1;
+
                          .content_chat-BoxImg {
                               border: 1px solid var(--border-color);
                               border-radius: 50%;
@@ -151,12 +155,13 @@ input {
                               color: var(--background);
                               font-weight: bold;
                               .header_nameBot {
-                                   color: black;
+                                   color: white;
                                    margin-bottom: 2px;
+                                   font-weight: 800;
                               }
                               .header_statusBot {
                                    font-size: 9px;
-                                   color: #766060;
+                                   color: #d7caca;
                                    i {
                                         font-size: 7px;
                                         border-radius: 50%;
@@ -175,6 +180,7 @@ input {
                          display: flex;
                          justify-content: center;
                          padding: 8px;
+                         color: white;
                          border-radius: 50%;
                          i {
                          }
@@ -189,13 +195,14 @@ input {
           .content_chat-Box {
                height: 300px;
                background-color: white;
-               border-radius: 5px;
+               // border-radius: 5px;
                padding: 1rem 4px;
 
                overflow: auto;
                padding-top: 10px;
-               padding-bottom: 24px;
-               .dateTime{
+               padding-bottom: 40px;
+
+               .dateTime {
                     font-size: 10px;
                     color: #807e7e;
                     text-align: center;
@@ -251,7 +258,7 @@ input {
                          margin: 0 4px;
                          max-width: 80%;
                          .content_chat-BoxText-right {
-                              background-color: #2D87F7;
+                              background-color: green;
                               border-radius: 20px;
                               color: var(--background);
                               font-size: 1rem;
@@ -267,10 +274,28 @@ input {
                }
           }
           .ft {
+               position: relative;
+               .typing_load {
+                    position: absolute;
+                    top: -35px;
+                    left: 5px;
+                    border: unset;
+                    // width: 127px;
+                    height: 30px;
+                    .container:hover {
+                         display: none;
+                    }
+               }
                .ft_bot {
+                    height: 50px;
+                    display: flex;
+                    width: 100%;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    background-color: white;
                     border-top: 1px solid rgba(100, 100, 111, 0.2);
                     .footer_chat-Box {
-                         
+                         width: 100%;
                          align-items: flex-end;
                          background-color: var(--back-ground);
                          display: flex;
@@ -285,7 +310,7 @@ input {
                               padding: 8px;
                               border-radius: 50%;
                               .fill {
-                                   color: #E4E6EB;
+                                   color: #e4e6eb;
                                    width: 1.5rem;
                               }
                               &:hover {
