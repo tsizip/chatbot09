@@ -3,26 +3,34 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { OpenAIService } from '../service/config'
 import moment from 'moment'
+import { TEXT_ERR, TEXT_FIRST } from '../constants/dataConst'
+// import { submitData } from '../service/submitData'
 
 
 type Props = {}
 
 export default function Boxchat({ }: Props) {
+     let regex = /(.{5,}?)\1+$/
      const [count, setCount] = useState(0)
      let valueFinal = ''
+     let valueTrainer = ''
      const [final, setFinal] = useState(String)
      const myRef = useRef<null | HTMLDivElement>(null)
      const [click, setClick] = useState(true)
      const [prompt, setPrompt] = useState('')
      const [logChat, setLogChat] = useState([
-          { type: 'AI', mess: 'Xin chào, tôi có thể giúp gì cho bạn?' },
+          { type: 'AI', mess: TEXT_FIRST },
      ])
 
+     let [err, setErr] = useState(0)
      const [logChatOld, setLogChatOld] = useState([
-          { type: 'AI', mess: 'Xin chào, tôi có thể giúp gì cho bạn?' },
+          { type: 'AI', mess: TEXT_FIRST },
      ])
 
-    
+     // value submit
+     const [valueSubmit, setValueSubmit] = useState('')
+
+
      const [typing, setTyping] = useState(false)
      const [QAinit, setQAinit] = useState(String)
 
@@ -38,25 +46,35 @@ export default function Boxchat({ }: Props) {
      }
 
      const xuly = async () => {
-          let value = valueFinal + final
+          // model old
+          // let value = valueFinal + final
+          let value = final + valueFinal
+          // console.log('value ddau vao', value)
+          // let value = valueSubmit
           // console.log('data prompt', value)
+
+
+          // callApi(value)
           if (count <= 1) {
                callApi(value)
           } else {
-               callApi(localStorage.getItem('data'))
+               await console.log('local data', localStorage.getItem('data'))
+               await callApi(`${prompt}-->`)
+               // callApi(value)
           }
+
 
      }
 
-     const callApi = OpenAIService.callApi(QAinit, setTyping, typing, setQAinit, valueFinal, setFinal, setLogChat, logChat, setPrompt, prompt, logChatOld, setLogChatOld)
+     const callApi = OpenAIService.callApi(QAinit, setTyping, typing, setQAinit, valueFinal, setFinal, setLogChat, logChat, setPrompt, prompt, logChatOld, setLogChatOld, xuly, err, setErr)
 
      useEffect(() => {
           executeScroll()
           localStorage.setItem('data', final)
           // console.log('logChat', logChat)
-          console.log('data prompt', final)
+          // console.log('data prompt', final)
 
-     }, [final])
+     }, [final, logChat])
 
 
      // test include
@@ -67,11 +85,11 @@ export default function Boxchat({ }: Props) {
      return (
           <div>
                <div className='parent'>
-                    <div className="chat-Box" style={{ width: !click ? '225px' : '300px'}}>
+                    <div className="chat-Box" style={{ width: !click ? '225px' : '300px' }}>
                          {/* --header-- */}
                          <div className='header'>
                               <div className="header_chat-Box">
-                                   <div className="header_chat-Box-left" style={{justifyContent: click ? 'unset' : 'center'}} onClick={hiddenBox}>
+                                   <div className="header_chat-Box-left" style={{ justifyContent: click ? 'unset' : 'center' }} onClick={hiddenBox}>
                                         <img alt='img1' className="content_chat-BoxImg" src={img1} />
                                         <div className="header_chat-BoxText">
                                              <p className='header_nameBot'>Mekomed Chatbot</p>
@@ -80,7 +98,7 @@ export default function Boxchat({ }: Props) {
                                         {/* <iframe src="https://embed.lottiefiles.com/animation/12966"></iframe> */}
 
                                    </div>
-                                   <div style={{display: click ? 'block' : 'none'}} className="header_chat-Box-right footer_chat-Box-hover" onClick={hiddenBox}>
+                                   <div style={{ display: click ? 'block' : 'none' }} className="header_chat-Box-right footer_chat-Box-hover" onClick={hiddenBox}>
                                         {click ? <i className="fas fa-minus" /> : <i className="fas fa-plus" />}
                                    </div>
                               </div>
@@ -116,37 +134,46 @@ export default function Boxchat({ }: Props) {
                          </div>
                          {/* --footer-- */}
                          <div className='ft' style={{ display: click ? 'block' : 'none' }}>
-                              {typing ? <img src='https://raw.githubusercontent.com/reachtokish/typing-animation/master/giphy.gif' className='typing_load' /> : null}
+                              {typing ? <img src='https://raw.githubusercontent.com/reachtokish/typing-animation/master/giphy.gif' alt='typing gif' className='typing_load' /> : null}
                               <div className='ft_bot'>
                                    <div className="footer_chat-Box">
-                                        {/* <div className="footer_chat-Box-hover">
-                                             <svg className="fill" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6h96 32H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48z" /></svg>
-                                        </div> */}
 
                                         <form onSubmit={async function (e) {
-                                             e.preventDefault()
+                                             await e.preventDefault()
+                                             // alert('submit')
                                              await setTyping(true)
                                              await setCount(count + 1)
                                              let arr = await logChat
 
                                              let checkSpam = await prompt.includes(' ')
                                              if (checkSpam) {
+
                                                   await arr.push({ type: 'Human', mess: prompt })
 
                                                   await setLogChat(arr)
-                                                  let promptValue = `${prompt}\\n`
-                                                  console.log('submit', promptValue)
+                                                  let promptValue = `${prompt} -->`
+                                                  await localStorage.setItem('valuebackup', promptValue)
+                                                  // console.log('submit', promptValue)
+
+                                                  // if (!promptValue.match(regex)) {
                                                   await setQAinit(promptValue)
                                                   valueFinal = valueFinal + promptValue
                                                   await setFinal(valueFinal + final)
+
+
+
                                                   await xuly()
                                                   await setPrompt('')
+                                                  // } else {
+                                                  //      alert(TEXT_ERR)
+                                                  // }
+
+
                                              } else {
-                                                  alert('vui long nhap du lieu hop le')
+                                                  alert(TEXT_ERR)
                                                   await setTyping(false)
                                                   await setPrompt('')
                                              }
-
 
 
                                         }} className="footer_chat-Box-input">
@@ -155,19 +182,7 @@ export default function Boxchat({ }: Props) {
                                              }} />
                                         </form>
                                         <div className="footer_chat-Box-hover" onClick={async function () {
-                                             // await setCount(count + 1)
-                                             // let arr = await logChat
-                                             // await arr.push({ type: 'Human', mess: prompt })
 
-                                             // await setLogChat(arr)
-                                             // let promptValue = `${prompt}\\n`
-                                             // console.log('submit', promptValue)
-                                             // await setQAinit(promptValue)
-                                             // valueFinal = valueFinal + promptValue
-                                             // await setFinal(valueFinal + final)
-
-                                             // await xuly()
-                                             // await setPrompt('')
                                              await setTyping(true)
                                              await setCount(count + 1)
                                              let arr = await logChat
@@ -185,7 +200,7 @@ export default function Boxchat({ }: Props) {
                                                   await xuly()
                                                   await setPrompt('')
                                              } else {
-                                                  alert('vui long nhap du lieu hop le')
+                                                  alert(TEXT_ERR)
                                                   await setTyping(false)
                                                   await setPrompt('')
                                              }
